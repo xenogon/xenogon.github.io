@@ -1,0 +1,18 @@
+---
+---
+<article class="layout">
+  <section class="prose introduction">
+    <p>I'm an Analytics Engineer based in Stockholm, currently working in the Internal Data &amp; Analytics team at <a href="https://funnel.io/">Funnel</a>. My team and I build and maintain our data platform on AWS, focusing on scalability for a data mesh inspired architecture.</p>
+  </section>
+  <section class="home-posts" aria-labelledby="posts-heading">
+    <h2 id="posts-heading" class="section-title">Posts</h2>
+    <div class="post-grid">
+      {% for post in site.posts %}
+      <a href="{{ post.url | relative_url }}" class="post-card">
+        <h3>{{ post.title | escape }}</h3>
+        <p class="post-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %Y' }}</time></p>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+</article>

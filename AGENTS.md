@@ -5,7 +5,7 @@ Brief notes for AI agents working on this repo.
 ## Workflow
 
 - Use `gh` CLI for GitHub operations (commits, pushes, repo management)
-- Preview changes locally with `hugo server -D` before pushing
+- Preview changes locally with `jekyll serve` before pushing
 - Commit in logical chunks with clear messages
 
 ## Cost Awareness
@@ -22,14 +22,16 @@ Brief notes for AI agents working on this repo.
 - Keep the repo public-safe: assume all code is visible to everyone
 - Don't modify `.git/` or bypass branch protections
 
-## Hugo Specifics
+## Blog Structure
 
-- Templates go in `layouts/`
-- Styles go in `static/css/site.css`
-- Config lives in `config/_default/`
-- Posts and pages live in `content/`
+- Templates go in `_layouts/`
+- Styles go in `assets/site.css`
+- Config lives in `_config.yml`
+- Published posts are `_posts/YYYY-MM-DD-slug.md`
+- Drafts go in `drafts/`, which must remain excluded from site builds
+- Run `ruby test_site.rb` after changing templates, config, or publishing
 
 ## Local Development
 
-- Run `hugo server -D` for live preview
+- Run `jekyll serve` for live preview
 - Site deploys automatically on push to `main` via GitHub Actions

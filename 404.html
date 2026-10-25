@@ -1,7 +1,10 @@
-{{ define "main" }}
+---
+title: Page not found
+permalink: /404.html
+sitemap: false
+---
 <section class="page-layout">
   <h1>Page not found</h1>
   <p>The page may have moved or no longer exists.</p>
-  <a href="{{ `/` | relURL }}">Return</a>
+  <a href="{{ '/' | relative_url }}">Return</a>
 </section>
-{{ end }}

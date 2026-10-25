@@ -1,0 +1,25 @@
+title: Simon Kalicinski
+author: Simon Kalicinski
+description: Analytics Engineer building data lakehouses on AWS
+url: https://xenogon.github.io
+timezone: Europe/Stockholm
+permalink: /posts/:title/
+future: false
+theme: null
+
+plugins: [jekyll-feed, jekyll-sitemap]
+feed:
+  path: index.xml
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude: [drafts, README.md, AGENTS.md, test_site.rb, public, resources, Gemfile, Gemfile.lock, vendor]
