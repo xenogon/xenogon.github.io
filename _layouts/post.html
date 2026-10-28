@@ -6,6 +6,7 @@ layout: default
     <a href="{{ '/' | relative_url }}">&lt;-- Back</a>
   </nav>
   <header class="article-header">
+    {% if page.draft %}<p class="post-meta">Draft · Local preview</p>{% endif %}
     <h1>{{ page.title | escape }}</h1>
     <p class="post-meta">
       <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%-d %B %Y' }}</time>

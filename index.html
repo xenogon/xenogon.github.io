@@ -10,6 +10,7 @@
       {% for post in site.posts %}
       <a href="{{ post.url | relative_url }}" class="post-card">
         <h3>{{ post.title | escape }}</h3>
+        {% if post.draft %}<span class="post-meta">Draft</span>{% endif %}
         <p class="post-meta"><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %Y' }}</time></p>
       </a>
       {% endfor %}

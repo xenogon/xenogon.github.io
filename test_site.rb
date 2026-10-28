@@ -1,3 +1,5 @@
+require "rubygems"
+Gem.use_paths(File.join(__dir__, "vendor/gems"), Gem.path)
 require "fileutils"
 require "tmpdir"
 require "jekyll"
@@ -13,10 +15,11 @@ Dir.mktmpdir("blog-check-") do |directory|
   source = File.join(directory, "source")
   output = File.join(directory, "output")
   FileUtils.mkdir_p(source)
-  ignored = %w[.git _site .jekyll-cache .bundle vendor public resources]
+  ignored = %w[.git _site _drafts .jekyll-cache .bundle vendor public resources]
   Dir.children(__dir__).reject { |name| ignored.include?(name) }.each do |name|
     FileUtils.cp_r(File.join(__dir__, name), source)
   end
+  File.symlink("drafts", File.join(source, "_drafts"))
   File.write(File.join(source, "drafts", "private.md"), "---\ntitle: [invalid YAML\n---\nPRIVATE_DRAFT_SENTINEL")
   File.write(File.join(source, "drafts", "attachment.txt"), "PRIVATE_ATTACHMENT_SENTINEL")
   File.write(File.join(source, "_posts", "2000-01-01-publication-check.md"), <<~MARKDOWN)
@@ -50,11 +53,25 @@ Dir.mktmpdir("blog-check-") do |directory|
   check(File.file?(File.join(output, "404.html")), "Missing 404 page")
   check(File.file?(File.join(output, "assets/site.css")), "Missing stylesheet")
   check(File.file?(File.join(output, "assets/img/author.jpg")), "Missing portrait")
-  %w[drafts README.md AGENTS.md test_site.rb].each do |name|
+  %w[drafts README.md AGENTS.md test_site.rb preview.command Gemfile Gemfile.lock].each do |name|
     check(!File.exist?(File.join(output, name)), "Source file leaked: #{name}")
   end
   Dir.glob(File.join(output, "**", "*.{html,xml,txt,md}")).each do |path|
     check(!File.read(path).match?(/PRIVATE_DRAFT_SENTINEL|PRIVATE_ATTACHMENT_SENTINEL|FUTURE_POST_SENTINEL/), "Unpublished content leaked: #{path}")
   end
+  File.write(File.join(source, "drafts", "private.md"), "---\ntitle: Private draft\n---\nPRIVATE_DRAFT_SENTINEL")
+  preview = File.join(directory, "preview")
+  preview_config = config.merge("show_drafts" => true, "safe" => false, "destination" => preview)
+  Dir.chdir(source) { Jekyll::Site.new(preview_config).process }
+  draft = File.read(File.join(preview, "posts/private/index.html"))
+  check(draft.include?("PRIVATE_DRAFT_SENTINEL"), "Local preview is missing the draft")
+  check(draft.include?("Draft · Local preview"), "The draft is not labelled")
+  preview_home = File.read(File.join(preview, "index.html"))
+  check(preview_home.include?("/posts/private/"), "Draft is missing from the preview homepage")
+  check(!preview_home.include?("My next post"), "The template appeared as a draft")
+  config["destination"] = preview
+  Dir.chdir(source) { Jekyll::Site.new(config).process }
+  check(!File.exist?(File.join(preview, "posts/private/index.html")), "Production retained a draft after preview")
+  check(!File.read(File.join(preview, "index.xml")).include?("PRIVATE_DRAFT_SENTINEL"), "Draft leaked into the production feed")
 end
-puts "Passed: publication, Markdown, escaping, existing URLs, feed, sitemap, assets, and draft/future exclusions."
+puts "Passed: publication, URLs, feeds, assets, draft preview, and production exclusions."

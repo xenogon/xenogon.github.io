@@ -1,5 +1,6 @@
 # Local Jekyll output and caches
 _site/
+_drafts
 .jekyll-cache/
 .jekyll-metadata
 .sass-cache/

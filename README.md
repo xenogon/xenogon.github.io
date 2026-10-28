@@ -21,18 +21,25 @@ Draft-only changes also skip deployment. Committed drafts are still publicly
 readable on GitHub. Put published images in `assets/` and link to them with
 `![Description](/assets/my-image.jpg)`.
 
-## Optional local preview
+## Local preview, including drafts
 
-With Ruby and [Jekyll](https://jekyllrb.com/docs/installation/) installed:
+Double-click `preview.command` in Finder, or run:
 
 ```sh
-gem install github-pages -v 232 --no-document
-jekyll serve
+./preview.command
 ```
 
-Open <http://localhost:4000/>. To preview unfinished writing, temporarily move it
-into `_posts/` with a dated filename, then move it back before merging.
-Run `ruby test_site.rb` to check publication, existing URLs, feeds and exclusions.
+The first run installs the preview dependencies into the ignored `vendor/`
+folder. It then opens <http://localhost:4000/> in your browser. Published posts
+and drafts appear together, with drafts labelled **Draft**. Save a Markdown
+file and the browser refreshes automatically. Leave the Terminal window open;
+press **Ctrl+C** to stop the preview.
+
+Keep writing in `drafts/`; there is no need to move or rename a file to preview
+it. The template stays hidden. Normal builds and deployments exclude drafts.
+
+With the preview dependencies installed, run `ruby test_site.rb` to check
+publication and preview.
 
 ## Files
 
@@ -40,6 +47,7 @@ Run `ruby test_site.rb` to check publication, existing URLs, feeds and exclusion
 - `drafts/` — unfinished writing and the template.
 - `index.html`, `_layouts/`, `assets/` — homepage, layouts and styling.
 - `_config.yml` — site settings and draft exclusion.
+- `preview.command`, `Gemfile` — local preview and its dependencies.
 - `.github/workflows/pages.yml` — build and deploy on site changes merged to `main`.
 
 Existing post URLs and the feed URL `/index.xml` are preserved. Unused Hugo tag

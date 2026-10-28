@@ -22,4 +22,5 @@ defaults:
     values:
       layout: post
 
-exclude: [drafts, README.md, AGENTS.md, test_site.rb, public, resources, Gemfile, Gemfile.lock, vendor]
+# Exclude draft contents while allowing edits to trigger preview rebuilds.
+exclude: ["drafts/**", README.md, AGENTS.md, test_site.rb, preview.command, public, resources, Gemfile, Gemfile.lock, vendor]
