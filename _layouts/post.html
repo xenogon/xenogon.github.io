@@ -1,0 +1,24 @@
+---
+layout: default
+---
+<article class="page-layout article-layout">
+  <nav class="breadcrumbs" aria-label="Breadcrumbs">
+    <a href="{{ '/' | relative_url }}">&lt;-- Back</a>
+  </nav>
+  <header class="article-header">
+    {% if page.draft %}<p class="post-meta">Draft · Local preview</p>{% endif %}
+    <h1>{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%-d %B %Y' }}</time>
+      <span aria-hidden="true">·</span>
+      {% assign minutes = content | strip_html | number_of_words | divided_by: 212.0 | ceil | at_least: 1 %}
+      <span>{{ minutes }} min read</span>
+    </p>
+    {% if page.description %}<p class="article-description">{{ page.description | escape }}</p>{% endif %}
+  </header>
+  <div class="prose article-content">{{ content }}</div>
+  <nav class="post-pagination" aria-label="Post navigation">
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}">← {{ page.previous.title | escape }}</a>{% endif %}
+    {% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }} →</a>{% endif %}
+  </nav>
+</article>
